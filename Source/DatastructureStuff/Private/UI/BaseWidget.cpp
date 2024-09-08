@@ -2,4 +2,32 @@
 
 
 #include "UI/BaseWidget.h"
+#include "Core/CppQueue.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/CanvasPanel.h"
+#include "Components/HorizontalBox.h"
+#include "Components/Button.h"
+#include "UI/DataCard.h"
 
+void UBaseWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+}
+
+void UBaseWidget::DisplayContent()
+{
+	if (!DataDisplayClass)
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("No valid data display widget assigned"));
+		return;
+	}
+
+	TArray<int32> DataReadout = Content->ReadContainer();
+	for (int32 val : DataReadout)
+	{
+		UDataCard* NewWidget = CreateWidget<UDataCard>(this, DataDisplayClass);
+		DataDisplay->AddChild(NewWidget);
+		NewWidget->SetDisplay(val);
+	}
+}

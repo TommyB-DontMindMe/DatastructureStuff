@@ -23,5 +23,8 @@ public:
 	virtual void Enqueue_Implementation(int32 Data) override;
 	virtual int32 Dequeue_Implementation() override;
 	virtual int32 Front_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Queue")
+	TArray<int32> ReadContainer();
 	
 };

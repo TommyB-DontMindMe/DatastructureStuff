@@ -20,5 +20,13 @@ int32 UCppQueue::Dequeue_Implementation()
 
 int32 UCppQueue::Front_Implementation()
 {
+	if (Container.IsEmpty())
+		return 0;
+
 	return Container[0];
+}
+
+TArray<int32> UCppQueue::ReadContainer()
+{
+	return Container;
 }
