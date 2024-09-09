@@ -37,8 +37,16 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UButton* AddDataButton;
 
+	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
+	UButton* RemoveDataButton;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DisplayContent();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void AddRandom();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void RemoveData();
 };

@@ -16,7 +16,7 @@ class DATASTRUCTURESTUFF_API UCppQueue : public UObject, public ICppQueueInterfa
 	GENERATED_BODY()
 protected:
 	UPROPERTY()
-	TArray<int32> Container;
+	TArray<int32> Container = {};
 
 public:
 	// CppInterfaceImplementation
