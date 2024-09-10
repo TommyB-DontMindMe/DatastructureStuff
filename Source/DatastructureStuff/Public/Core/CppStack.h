@@ -23,4 +23,7 @@ public:
 	void Push_Implementation(int32 Data) override;
 	int32 Pop_Implementation() override;
 	int32 Top_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Queue")
+	TArray<int32> ReadContainer();
 };

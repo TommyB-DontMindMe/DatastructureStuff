@@ -7,6 +7,7 @@
 #include "BaseWidget.generated.h"
 
 class UCppQueue;
+class UCppStack;
 class UDataCard;
 class UCanvasPanel;
 class UHorizontalBox;
@@ -25,6 +26,12 @@ protected:
 	UPROPERTY()
 	UCppQueue* Content;
 
+	UPROPERTY()
+	UCppStack* AltContent;
+
+	UPROPERTY()
+	bool StackSwitch;
+
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UDataCard> DataDisplayClass;
 
@@ -40,6 +47,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UButton* RemoveDataButton;
 
+	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
+	UButton* SwitchModeButton;
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DisplayContent();
@@ -49,4 +59,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void RemoveData();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void SwitchMode();
 };

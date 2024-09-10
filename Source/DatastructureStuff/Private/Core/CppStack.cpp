@@ -25,3 +25,8 @@ int32 UCppStack::Top_Implementation()
 
 	return Container[0];
 }
+
+TArray<int32> UCppStack::ReadContainer()
+{
+	return Container;
+}

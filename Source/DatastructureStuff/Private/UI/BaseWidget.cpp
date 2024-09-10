@@ -3,6 +3,7 @@
 
 #include "UI/BaseWidget.h"
 #include "Core/CppQueue.h"
+#include "Core/CppStack.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CanvasPanel.h"
 #include "Components/HorizontalBox.h"
@@ -15,7 +16,11 @@ void UBaseWidget::NativeOnInitialized()
 	
 	AddDataButton->OnClicked.AddDynamic(this, &UBaseWidget::AddRandom);
 	RemoveDataButton->OnClicked.AddDynamic(this, &UBaseWidget::RemoveData);
+	SwitchModeButton->OnClicked.AddDynamic(this, &UBaseWidget::SwitchMode);
 	Content = NewObject<UCppQueue>();
+	AltContent = NewObject<UCppStack>();
+
+	StackSwitch = false;
 }
 
 void UBaseWidget::DisplayContent()
@@ -28,7 +33,7 @@ void UBaseWidget::DisplayContent()
 	}
 	
 	DataDisplay->ClearChildren();
-	TArray<int32> DataReadout = Content->ReadContainer();
+	TArray<int32> DataReadout = StackSwitch? AltContent->ReadContainer() : Content->ReadContainer();
 	for (int32 val : DataReadout)
 	{
 		UDataCard* NewWidget = CreateWidget<UDataCard>(this, DataDisplayClass);
@@ -39,18 +44,38 @@ void UBaseWidget::DisplayContent()
 
 void UBaseWidget::AddRandom()
 {
-	if (ICppQueueInterface* ContentReference = Cast<ICppQueueInterface>(Content))
+	if (StackSwitch)
 	{
-		ContentReference->Execute_Enqueue(Content, FMath::RandRange(1, 128));
+		if (ICppStackInterface* ContentReference = Cast<ICppStackInterface>(AltContent))
+		{
+			ContentReference->Execute_Push(AltContent, FMath::RandRange(1, 99));
+		}
+	}
+	else if (ICppQueueInterface* ContentReference = Cast<ICppQueueInterface>(Content))
+	{
+		ContentReference->Execute_Enqueue(Content, FMath::RandRange(1, 99));
 	}
 	DisplayContent();
 }
 
 void UBaseWidget::RemoveData()
 {
-	if (ICppQueueInterface* ContentReference = Cast<ICppQueueInterface>(Content))
+	if (StackSwitch)
+	{
+		if (ICppStackInterface* ContentReference = Cast<ICppStackInterface>(AltContent))
+		{
+			ContentReference->Execute_Pop(AltContent);
+		}
+	}
+	else if (ICppQueueInterface* ContentReference = Cast<ICppQueueInterface>(Content))
 	{
 		ContentReference->Execute_Dequeue(Content);
 	}
+	DisplayContent();
+}
+
+void UBaseWidget::SwitchMode()
+{
+	StackSwitch = !StackSwitch;
 	DisplayContent();
 }
