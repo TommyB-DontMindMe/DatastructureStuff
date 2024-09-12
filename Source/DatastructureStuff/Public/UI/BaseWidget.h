@@ -12,6 +12,7 @@ class UDataCard;
 class UCanvasPanel;
 class UHorizontalBox;
 class UButton;
+class UTextBlock;
 
 /**
  * 
@@ -43,9 +44,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UButton* AddDataButton;
+	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
+	UTextBlock* AddButtonText;
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UButton* RemoveDataButton;
+	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
+	UTextBlock* RemoveButtonText;
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UButton* SwitchModeButton;
@@ -53,6 +58,12 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void DisplayContent();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	UDataCard* DisplayDataWidget(int32 Input);
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void RemoveDataWidget();
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void AddRandom();

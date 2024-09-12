@@ -2,6 +2,7 @@
 
 
 #include "UI/BaseWidget.h"
+#include "Algo/Reverse.h"
 #include "Core/CppQueue.h"
 #include "Core/CppStack.h"
 #include "Blueprint/UserWidget.h"
@@ -9,6 +10,7 @@
 #include "Components/HorizontalBox.h"
 #include "Components/Button.h"
 #include "UI/DataCard.h"
+#include "Components/TextBlock.h"
 #include "Animation/WidgetAnimation.h"
 
 void UBaseWidget::NativeOnInitialized()
@@ -26,38 +28,59 @@ void UBaseWidget::NativeOnInitialized()
 
 void UBaseWidget::DisplayContent()
 {
+	
+	
+	DataDisplay->ClearChildren();
+	TArray<int32> DataReadout = StackSwitch? AltContent->ReadContainer() : Content->ReadContainer();
+	if (StackSwitch)
+		Algo::Reverse(DataReadout);
+	for (int32 val : DataReadout)
+	{
+		DisplayDataWidget(val);
+	}
+}
+
+UDataCard* UBaseWidget::DisplayDataWidget(int32 Input)
+{
 	if (!DataDisplayClass)
 	{
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("No valid data display widget assigned"));
-		return;
+		return nullptr;
 	}
+
+	UDataCard* NewWidget = CreateWidget<UDataCard>(this, DataDisplayClass);
+	DataDisplay->InsertChildAt(StackSwitch ? 0 : DataDisplay->GetChildrenCount(), NewWidget);
 	
-	DataDisplay->ClearChildren();
-	TArray<int32> DataReadout = StackSwitch? AltContent->ReadContainer() : Content->ReadContainer();
-	for (int32 val : DataReadout)
-	{
-		UDataCard* NewWidget = CreateWidget<UDataCard>(this, DataDisplayClass);
-		DataDisplay->AddChild(NewWidget);
-		NewWidget->SetDisplay(val);
-		NewWidget->PlayAnimation(NewWidget->OpenAnimation);
-	}
+	NewWidget->SetDisplay(Input);
+	NewWidget->PlayAnimation(NewWidget->OpenAnimation);
+
+	return NewWidget;
+}
+
+void UBaseWidget::RemoveDataWidget()
+{
+	if (!DataDisplay->HasAnyChildren())
+		return;
+
+	DataDisplay->RemoveChildAt(0);
 }
 
 void UBaseWidget::AddRandom()
 {
+	int32 Random = FMath::RandRange(1, 99);
 	if (StackSwitch)
 	{
 		if (ICppStackInterface* ContentReference = Cast<ICppStackInterface>(AltContent))
 		{
-			ContentReference->Execute_Push(AltContent, FMath::RandRange(1, 99));
+			ContentReference->Execute_Push(AltContent, Random);
 		}
 	}
 	else if (ICppQueueInterface* ContentReference = Cast<ICppQueueInterface>(Content))
 	{
-		ContentReference->Execute_Enqueue(Content, FMath::RandRange(1, 99));
+		ContentReference->Execute_Enqueue(Content, Random);
 	}
-	DisplayContent();
+	DisplayDataWidget(Random);
 }
 
 void UBaseWidget::RemoveData()
@@ -73,11 +96,21 @@ void UBaseWidget::RemoveData()
 	{
 		ContentReference->Execute_Dequeue(Content);
 	}
-	DisplayContent();
+	RemoveDataWidget();
 }
 
 void UBaseWidget::SwitchMode()
 {
 	StackSwitch = !StackSwitch;
+	if (StackSwitch)
+	{
+		AddButtonText->SetText(FText::FromString("Push"));
+		RemoveButtonText->SetText(FText::FromString("Pop"));
+	}
+	else
+	{
+		AddButtonText->SetText(FText::FromString("Enqueue"));
+		RemoveButtonText->SetText(FText::FromString("Dequeue"));
+	}
 	DisplayContent();
 }
