@@ -9,6 +9,7 @@
 #include "Components/HorizontalBox.h"
 #include "Components/Button.h"
 #include "UI/DataCard.h"
+#include "Animation/WidgetAnimation.h"
 
 void UBaseWidget::NativeOnInitialized()
 {
@@ -39,6 +40,7 @@ void UBaseWidget::DisplayContent()
 		UDataCard* NewWidget = CreateWidget<UDataCard>(this, DataDisplayClass);
 		DataDisplay->AddChild(NewWidget);
 		NewWidget->SetDisplay(val);
+		NewWidget->PlayAnimation(NewWidget->OpenAnimation);
 	}
 }
 

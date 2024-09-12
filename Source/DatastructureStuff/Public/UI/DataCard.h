@@ -7,6 +7,7 @@
 #include "DataCard.generated.h"
 
 class UTextBlock;
+class UWidgetAnimation;
 
 /**
  * 
@@ -22,4 +23,7 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void SetDisplay(int32 Input);
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* OpenAnimation;
 };
