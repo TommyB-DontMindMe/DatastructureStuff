@@ -15,7 +15,7 @@ UCLASS()
 class DATASTRUCTURESTUFF_API ULinkedList : public UObject
 {
 	GENERATED_BODY()
-protected:
+public:
 	UPROPERTY()
 	UNode* Head;
 
@@ -25,7 +25,7 @@ protected:
 	UPROPERTY()
 	UNode* Current;
 
-public:
+
 	UFUNCTION(BlueprintCallable, Category = "List")
 	void Append(FString Input);
 
@@ -34,6 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "List")
 	void DeleteWithValue(FString Subject);
+
+	UFUNCTION(BlueprintCallable, Category = "List")
+	void Step(int32 Steps = 1);
 
 	UFUNCTION(BlueprintCallable, Category = "List")
 	TArray<FString> OutputContent();

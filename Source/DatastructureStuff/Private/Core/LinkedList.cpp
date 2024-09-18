@@ -82,6 +82,24 @@ void ULinkedList::DeleteWithValue(FString Subject)
 	}
 }
 
+void ULinkedList::Step(int32 Steps)
+{
+	if (!Head)
+		return;
+
+	for (size_t i = 0; i < Steps; i++)
+	{
+		if (Current->Next)
+		{
+			Current = Current->Next;
+		}
+		else
+		{
+			Current = Head;
+		}
+	}
+}
+
 TArray<FString> ULinkedList::OutputContent()
 {
 	return TArray<FString>();
