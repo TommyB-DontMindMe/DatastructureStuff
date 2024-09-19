@@ -7,9 +7,9 @@
 #include "ListDisplay.generated.h"
 
 class ULinkedList;
-class UHorizontalBox;
 class UButton;
 class UEditableTextBox;
+class UTextBlock;
 
 /**
  * 
@@ -23,13 +23,15 @@ private:
 	float Offset = 0;
 
 	UPROPERTY()
-	float WidgetWidth;
+	float WidgetWidth = 10;
+
+	UPROPERTY()
+	float DisplayWidgetWidth;
 
 protected:
 	void NativeOnInitialized() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	virtual void OnWidgetRebuilt() override;
-
 
 	UPROPERTY(EditAnywhere, Category = "List")
 	ULinkedList* Content;
@@ -37,24 +39,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "UI")
 	float DisplayTime = 15;
 
-
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
-	UHorizontalBox* DataDisplay;
-
-	/*UPROPERTY(EditAnywhere, Category = "UI")
-	TSubclassOf<UDataCard> DataDisplayClass;*/
-
-	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
-	UButton* InputTextButton;
+	UTextBlock* DataDisplay;
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UEditableTextBox* TextInput;
 
 public:
-	UFUNCTION()
-	void TextCommit(const FText& Text, ETextCommit::Type CommitMethod);
-
-	UFUNCTION()
-	void BeginScroll();
-
+	//UFUNCTION()
+	//void NewTextCommited(const FText& InText, ETextCommit::Type CommitMethod);
 };

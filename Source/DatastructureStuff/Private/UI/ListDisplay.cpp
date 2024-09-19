@@ -6,12 +6,12 @@
 #include "Core/Node.h"
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
-#include "Components/HorizontalBox.h"
+#include "Components/TextBlock.h"
 
 void UListDisplay::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
-	TextInput->OnTextCommitted.AddDynamic(this, &UListDisplay::TextCommit);
+	//TextInput->OnTextCommitted.AddDynamic(this, &UListDisplay::NewTextCommited);
 
 	if (!Content)
 	{
@@ -19,24 +19,26 @@ void UListDisplay::NativeOnInitialized()
 	}
 }
 
+
 void UListDisplay::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if (DataDisplay->GetChildrenCount() > 1)
+	if (Content->Current)
 	{
 		Offset -= InDeltaTime * WidgetWidth / DisplayTime;
-		
 
-		float FirstChildWidth = DataDisplay->GetChildAt(0)->GetDesiredSize().X;
-		if (Offset <= -FirstChildWidth)
+		if (Offset <= -DisplayWidgetWidth)
 		{
-			Offset += FirstChildWidth;
-			DataDisplay->RemoveChildAt(0);
+			DataDisplay->SetText(FText::FromString(Content->Current->Data));
+			Content->Step();
+			DataDisplay->ForceLayoutPrepass();
+			Offset = WidgetWidth;
 		}
 		DataDisplay->SetRenderTransform(FWidgetTransform(FVector2D(Offset, 0), FVector2D::UnitVector, FVector2D::ZeroVector, 0));
 	}
 }
+
 
 void UListDisplay::OnWidgetRebuilt()
 {
@@ -44,20 +46,20 @@ void UListDisplay::OnWidgetRebuilt()
 	ForceLayoutPrepass();
 	WidgetWidth = DataDisplay->GetDesiredSize().X;
 
-	BeginScroll();
-}
-
-
-
-void UListDisplay::TextCommit(const FText& Text, ETextCommit::Type CommitMethod)
-{
-	if (!Content)
-		return;
-	
-	Content->Append(Text.ToString());
-}
-
-void UListDisplay::BeginScroll()
-{
 	Offset = WidgetWidth;
 }
+
+
+//void UListDisplay::NewTextCommited(const FText& InText, ETextCommit::Type CommitMethod)
+//{
+//	if (!Content)
+//		return;
+//
+//	Content->Append(InText.ToString());
+//	if (DataDisplay->GetText().IsEmptyOrWhitespace())
+//	{
+//		DataDisplay->SetText(FText::FromString(Content->Current->Data));
+//		DataDisplay->ForceLayoutPrepass();
+//		Offset = WidgetWidth;
+//	}
+//}
