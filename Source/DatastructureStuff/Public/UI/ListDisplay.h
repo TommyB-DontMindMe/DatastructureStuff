@@ -40,12 +40,15 @@ protected:
 	float DisplayTime = 15;
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
+	UWidget* DisplayPanel;
+
+	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UTextBlock* DataDisplay;
 
 	UPROPERTY(EditAnywhere, Category = "UI", meta = (BindWidget))
 	UEditableTextBox* TextInput;
 
 public:
-	//UFUNCTION()
-	//void NewTextCommited(const FText& InText, ETextCommit::Type CommitMethod);
+	UFUNCTION()
+	void NewTextCommited(const FText& InText, ETextCommit::Type CommitMethod);
 };

@@ -14,7 +14,10 @@ class DATASTRUCTURESTUFF_API UNode : public UObject
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY()
 	FString Data;
+
+	UPROPERTY()
 	UNode* Next;
 	
 };

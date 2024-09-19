@@ -10,6 +10,10 @@ void ULinkedList::Append(FString Input)
 	{
 		Head = NewObject<UNode>();
 		Head->Data = Input;
+		if (!Current)
+		{
+			Current = Head;
+		}
 	}
 	else
 	{
@@ -31,6 +35,10 @@ void ULinkedList::Prepend(FString Input)
 	{
 		Head = NewObject<UNode>();
 		Head->Data = Input;
+		if (!Current)
+		{
+			Current = Head;
+		}
 	}
 	else
 	{
