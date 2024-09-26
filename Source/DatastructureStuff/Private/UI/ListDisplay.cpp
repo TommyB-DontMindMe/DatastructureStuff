@@ -51,8 +51,8 @@ void UListDisplay::OnWidgetRebuilt()
 	WidgetWidth = DisplayPanel->GetDesiredSize().X;
 
 	Offset = WidgetWidth;
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("The text display is: %f pixels wide"), WidgetWidth));
+	/*if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("The text display is: %f pixels wide"), WidgetWidth));*/
 }
 
 
